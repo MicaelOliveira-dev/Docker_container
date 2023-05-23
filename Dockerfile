@@ -8,12 +8,12 @@ RUN apt update && apt install -y python3-venv
 
 RUN python3 -m venv venv
 
-RUN . venv/bin/activate && \
+RUN /bin/bash -c "source venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install -r requirements.txt"
 
-RUN . venv/bin/activate && \
+RUN /bin/bash -c "source venv/bin/activate && \
     python3 manage.py migrate && \
-    echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', '123')" | . venv/bin/python manage.py shell
+    echo \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', '123')\" | python3 manage.py shell"
 
-CMD . venv/bin/activate && python3 manage.py runserver
+CMD /bin/bash -c "source venv/bin/activate && python3 manage.py runserver"
